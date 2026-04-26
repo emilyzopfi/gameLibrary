@@ -1,0 +1,9 @@
+[package]
+name = "gameLibrary"
+version = "0.1.0"
+lang = "C11"
+
+linker-options = [ "-rpath", "lib/CSFML/build/lib" ]
+
+[dependencies]
+CSFML = { path="lib/CSFML" }
