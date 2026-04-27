@@ -13,9 +13,10 @@ typedef struct Slot{
     sfVector2i size; 
     struct Card card; 
     sfRectangleShape* background; 
+    char title[50]; 
 } Slot;
 
 
 Card cardCreate(sfColor inColor, char* inTitle); 
-Slot slotCreate(sfVector2i inLocation, sfVector2i inSize, Card inCard); 
+Slot slotCreate(sfVector2i inLocation, sfVector2i inSize, Card inCard, char* inTitle); 
 void slotUpdate(Slot slots[], Card cards[], int gameIdx); 

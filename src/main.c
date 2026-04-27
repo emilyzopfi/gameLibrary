@@ -1,5 +1,6 @@
 #include "CSFML/System.h"
 #include "CSFML/Graphics.h"
+#include "CSFML/System/Vector2.h"
 #include "CSFML/Window.h"
 #include <time.h> 
 #include <stdio.h>
@@ -9,6 +10,7 @@
 #include <stdbool.h>
 #include "button.h"
 #include "cards.h"
+#include "text.h"
 
 sfRenderWindow* window; 
 
@@ -37,9 +39,9 @@ int main(int argc, char **argv) {
     cards[7] = cardCreate(sfCyan, "game 7"); 
     
     struct Slot slots[3];
-    slots[0] = slotCreate(pos0, size, cards[0]); 
-    slots[1] = slotCreate(pos1, size, cards[1]); 
-    slots[2] = slotCreate(pos2, size, cards[2]); 
+    slots[0] = slotCreate(pos0, size, cards[0], cards[0].title); 
+    slots[1] = slotCreate(pos1, size, cards[1], cards[1].title); 
+    slots[2] = slotCreate(pos2, size, cards[2], cards[2].title); 
 
     int gameIdx = 0; 
 
@@ -47,16 +49,9 @@ int main(int argc, char **argv) {
     window = sfRenderWindow_create(mode, "welcome", sfClose, sfWindowed, NULL);
     // sfRectangleShape* background = createRectangle(0, 0, 200 ,200, col.background); 
 
-
-    // creation of title 
-    sfFont* font = sfFont_createFromFile("res/newFont.otf"); 
-    sfText* title = sfText_create(font); 
     sfVector2f vec = {300,50};
-    sfText_setPosition(title, vec); 
-    sfText_setFillColor(title, sfMagenta); 
-    sfText_setCharacterSize(title, 50); 
-    sfText_setStyle(title, sfTextRegular);
-    sfText_setString(title, "Meilei's Console");
+    sfText* title = textCreate("res/newFont.otf", vec, sfMagenta, 50,"Meilei's Console"); 
+
 
     struct Button arrowLeft = (struct Button) {
         .pos = {50,300},
@@ -85,12 +80,20 @@ int main(int argc, char **argv) {
 
         sfRenderWindow_clear(window, sfBlack);
 
-        // want to create a start up screen with menu. 
-        // sfRenderWindow_drawRectangleShape(window, background, NULL); 
+        sfVector2f pos0 = {170,350};
+        sfVector2f pos1 = {410,350};
+        sfVector2f pos2 = {650,350};
+        sfText* card0Text = textCreate("res/newFont.otf", pos0, sfWhite, 25, slots[0].title); 
+        sfText* card1Text = textCreate("res/newFont.otf", pos1, sfWhite, 25, slots[1].title); 
+        sfText* card2Text = textCreate("res/newFont.otf", pos2, sfWhite, 25, slots[2].title); 
+
         sfRenderWindow_drawRectangleShape(window, slots[0].background , NULL); 
         sfRenderWindow_drawRectangleShape(window, slots[1].background, NULL); 
         sfRenderWindow_drawRectangleShape(window, slots[2].background, NULL); 
-        sfRenderWindow_drawText(window, title, NULL); 
+        sfRenderWindow_drawText(window, title, NULL);
+        sfRenderWindow_drawText(window, card0Text, NULL); 
+        sfRenderWindow_drawText(window, card1Text, NULL);
+        sfRenderWindow_drawText(window, card2Text, NULL);
         sfRenderWindow_drawRectangleShape(window, arrowRight.shape, NULL); 
         sfRenderWindow_drawRectangleShape(window, arrowLeft.shape, NULL); 
         sfRenderWindow_display(window);
@@ -99,3 +102,4 @@ int main(int argc, char **argv) {
     sfRenderWindow_destroy(window);
     return 0;
 }
+
