@@ -1,6 +1,5 @@
-#include "CSFML/Graphics.h"
-#include "CSFML/Graphics/RenderWindow.h"
 #include "CSFML/System.h"
+#include "CSFML/Graphics.h"
 #include "CSFML/Window.h"
 #include <time.h> 
 #include <stdio.h>
@@ -9,6 +8,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "button.h"
+#include "cards.h"
 
 sfRenderWindow* window; 
 
@@ -21,7 +21,26 @@ int main(int argc, char **argv) {
     //     .color3 = sfGreen 
     // }; 
 
-    sfColor games[] = {sfGreen, sfMagenta, sfYellow, sfCyan, sfGreen, sfMagenta, sfYellow, sfCyan}; 
+    struct Card cards[8]; 
+
+    sfVector2i pos0 = {160,200}; 
+    sfVector2i pos1 = {400,200}; 
+    sfVector2i pos2 = {640,200}; 
+    sfVector2i size = {240,200}; 
+    cards[0] = cardCreate(sfMagenta, "Game 0"); 
+    cards[1] = cardCreate(sfCyan, "Game 1"); 
+    cards[2] = cardCreate(sfGreen, "Game 2"); 
+    cards[3] = cardCreate(sfBlue, "game 3"); 
+    cards[4] = cardCreate(sfYellow, "game 4"); 
+    cards[5] = cardCreate(sfRed, "game 5"); 
+    cards[6] = cardCreate(sfMagenta, "game 6"); 
+    cards[7] = cardCreate(sfCyan, "game 7"); 
+    
+    struct Slot slots[3];
+    slots[0] = slotCreate(pos0, size, cards[0]); 
+    slots[1] = slotCreate(pos1, size, cards[1]); 
+    slots[2] = slotCreate(pos2, size, cards[2]); 
+
     int gameIdx = 0; 
 
     sfVideoMode mode = {{1000, 600}, 32};
@@ -59,21 +78,18 @@ int main(int argc, char **argv) {
             }
         }
         
-        if(buttonClicked(arrowRight, window) && gameIdx < sizeof(games)/sizeof(games[0])-3) gameIdx++; 
+        if(buttonClicked(arrowRight, window) && gameIdx < sizeof(cards)/sizeof(cards[0])-3) gameIdx++; 
         if(buttonClicked(arrowLeft, window) && gameIdx > 0) gameIdx--; 
 
+        slotUpdate(slots, cards, gameIdx); 
 
         sfRenderWindow_clear(window, sfBlack);
 
-        sfRectangleShape* card1 = rectangleCreate(160,200,240,200, games[gameIdx]); 
-        sfRectangleShape* card2 = rectangleCreate(400,200,240,200, games[gameIdx + 1]); 
-        sfRectangleShape* card3 = rectangleCreate(640,200,240,200, games[gameIdx + 2]); 
-
         // want to create a start up screen with menu. 
         // sfRenderWindow_drawRectangleShape(window, background, NULL); 
-        sfRenderWindow_drawRectangleShape(window, card1, NULL); 
-        sfRenderWindow_drawRectangleShape(window, card2, NULL); 
-        sfRenderWindow_drawRectangleShape(window, card3, NULL); 
+        sfRenderWindow_drawRectangleShape(window, slots[0].background , NULL); 
+        sfRenderWindow_drawRectangleShape(window, slots[1].background, NULL); 
+        sfRenderWindow_drawRectangleShape(window, slots[2].background, NULL); 
         sfRenderWindow_drawText(window, title, NULL); 
         sfRenderWindow_drawRectangleShape(window, arrowRight.shape, NULL); 
         sfRenderWindow_drawRectangleShape(window, arrowLeft.shape, NULL); 
