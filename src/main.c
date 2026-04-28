@@ -13,6 +13,7 @@
 #include "text.h"
 
 sfRenderWindow* window; 
+sfFont* font;
 
 int main(int argc, char **argv) {
 
@@ -22,7 +23,7 @@ int main(int argc, char **argv) {
     //     .color2 = sfCyan,
     //     .color3 = sfGreen 
     // }; 
-
+    font = sfFont_createFromFile("res/newFont.otf"); 
     struct Card cards[8]; 
 
     sfVector2i pos0 = {160,200}; 
@@ -50,7 +51,7 @@ int main(int argc, char **argv) {
     // sfRectangleShape* background = createRectangle(0, 0, 200 ,200, col.background); 
 
     sfVector2f vec = {300,50};
-    sfText* title = textCreate("res/newFont.otf", vec, sfMagenta, 50,"Meilei's Console"); 
+    sfText* title = textCreate(font, vec, sfMagenta, 50,"Meilei's Console"); 
 
 
     struct Button arrowLeft = (struct Button) {
@@ -83,9 +84,9 @@ int main(int argc, char **argv) {
         sfVector2f pos0 = {170,350};
         sfVector2f pos1 = {410,350};
         sfVector2f pos2 = {650,350};
-        sfText* card0Text = textCreate("res/newFont.otf", pos0, sfWhite, 25, slots[0].title); 
-        sfText* card1Text = textCreate("res/newFont.otf", pos1, sfWhite, 25, slots[1].title); 
-        sfText* card2Text = textCreate("res/newFont.otf", pos2, sfWhite, 25, slots[2].title); 
+        sfText* card0Text = textCreate(font, pos0, sfWhite, 25, slots[0].title); 
+        sfText* card1Text = textCreate(font, pos1, sfWhite, 25, slots[1].title); 
+        sfText* card2Text = textCreate(font, pos2, sfWhite, 25, slots[2].title); 
 
         sfRenderWindow_drawRectangleShape(window, slots[0].background , NULL); 
         sfRenderWindow_drawRectangleShape(window, slots[1].background, NULL); 
